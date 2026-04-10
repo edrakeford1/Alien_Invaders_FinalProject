@@ -1,9 +1,16 @@
+"""
+Program: bullet.py
+Name: Elijah Drakeford
+Purpose: a class to manage the bullets fired from the ship
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 import pygame
 
 from pygame.sprite import Sprite
 
 class Bullet(Sprite):
-    """ A class to manage bullets fired from the ship """
     def __init__(self, ai_game):
         """ Create a bullet object at the ship's current position """
         super().__init__()

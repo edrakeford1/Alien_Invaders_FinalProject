@@ -1,1 +1,9 @@
+"""
+Program: requirements.txt
+Name: Elijah Drakeford
+Purpose: Requirements needed to run the alien invasion program
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 pygame-ce == 2.5.7

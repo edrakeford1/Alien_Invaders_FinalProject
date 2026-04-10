@@ -1,5 +1,12 @@
+"""
+Program: settings.py
+Name: Elijah Drakeford
+Purpose: A class to store all settings for alien invasion
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 class Settings:
-    """ A class to store all settings for Alien Invasion """
 
     def __init__(self):
         """ Initialize the game's settings """

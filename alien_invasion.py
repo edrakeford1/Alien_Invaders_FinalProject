@@ -1,5 +1,5 @@
 """
-Program: Alien Invasion
+Program: alien_invasion.py
 Name: Elijah Drakeford
 Purpose: Changing game mechanics of the Alien Invasion game
 Date: April 10, 2026

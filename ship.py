@@ -1,7 +1,14 @@
+"""
+Program: ship.py
+Name: Elijah Drakeford
+Purpose: A class to manage the ship
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 import pygame
 
 class Ship:
-    """ A class to manage the ship """
 
     def __init__(self, ai_game):
         """ Initialize the ship and set its starting position """
