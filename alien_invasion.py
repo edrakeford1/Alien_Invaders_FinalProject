@@ -77,7 +77,7 @@ class AlienInvasion:
         
         """ Create a new bullet and add it to the bullets group """
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0:
+            if bullet.rect.left > self.screen.width:
                 self.bullets.remove(bullet)
     
     def _update_screen(self):
