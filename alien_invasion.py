@@ -1,3 +1,11 @@
+"""
+Program: Alien Invasion
+Name: Elijah Drakeford
+Purpose: Changing game mechanics of the Alien Invasion game
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 import sys
 
 import pygame
