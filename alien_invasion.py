@@ -1,6 +1,18 @@
+"""
+Program: alien_invasion.py
+Name: Elijah Drakeford
+Purpose: Changing game mechanics of the Alien Invasion game
+Date: April 10, 2026
+Starter Code: Cloned from https://github.com/edrakeford1/Alien_Invaders_Class
+"""
+
 import sys
 
 import pygame
+
+from settings import Settings
+from ship import Ship
+from bullet import Bullet
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
@@ -9,8 +21,15 @@ class AlienInvasion:
         """ Initialize the game, and create game resources."""
         pygame.init()
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((1200, 800))
+        self.settings = Settings()
+        
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
+
+        self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
 
         # Set the background color
         self.bg_color = (230, 230, 230)
@@ -18,17 +37,65 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game."""
         while True:
-            # Watch for keyboard and mouse events.
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-
-            # Redraw the screen during each pass through the loop
-            self.screen.fill(self.bg_color)
-
-            # Make the most recently drawn screen visible
-            pygame.display.flip()
+            self._check_events()
+            self.ship.update()
+            self._update_bullets()
+            self._update_screen()
             self.clock.tick(60)
+
+    def _check_events(self):
+        # Respond to key presses and mouse events.
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                self._check_keydown_events(event)
+            elif event.type == pygame.KEYUP:
+                self._check_keyup_events(event)
+
+    def _check_keydown_events(self, event):
+        """ Respond to key presses """
+        if event.key == pygame.K_UP:
+            self.ship.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _check_keyup_events(self, event):
+        """ Respond to key releases """
+        if event.key == pygame.K_UP:
+            self.ship.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.ship.moving_down = False
+
+    def _fire_bullet(self):
+        """ Create a new bullet and add it to the bullets group """
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """ Update position of the bullets and get rid of the old bullet """
+
+        # Update bullet positions
+        self.bullets.update()
+        
+        """ Create a new bullet and add it to the bullets group """
+        for bullet in self.bullets.copy():
+            if bullet.rect.left > self.screen.width:
+                self.bullets.remove(bullet)
+    
+    def _update_screen(self):
+        """ Update images on the screen, and flip to the new screen """
+        self.screen.fill(self.settings.bg_color)
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+        self.ship.blitme()
+        pygame.display.flip()
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game
