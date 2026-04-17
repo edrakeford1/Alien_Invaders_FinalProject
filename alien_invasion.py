@@ -13,6 +13,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
@@ -30,6 +31,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
 
         # Set the background color
         self.bg_color = (230, 230, 230)
@@ -40,6 +44,7 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
             self.clock.tick(60)
 
@@ -79,7 +84,6 @@ class AlienInvasion:
 
     def _update_bullets(self):
         """ Update position of the bullets and get rid of the old bullet """
-
         # Update bullet positions
         self.bullets.update()
         
@@ -87,6 +91,30 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.left > self.screen.width:
                 self.bullets.remove(bullet)
+
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """ Respond to bullet-alien collision """
+        # Remove any bullets and aliens that have collided
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet
+            self.bullets.empty()
+            self._create_fleet()
+
+    def _update_aliens(self):
+        """ Check if the fleet is at an edge, then update positions """
+        self._check_fleet_edges()
+        self.aliens.update()
+
+        # Look for alien-ship collision
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+
+        # Look for aliens hitting left of the screen
+        self._check_aliens_left()
     
     def _update_screen(self):
         """ Update images on the screen, and flip to the new screen """
@@ -94,8 +122,14 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.ship.blitme()
+        self.aliens.draw(self.screen)
         pygame.display.flip()
 
+    def _create_fleet(self):
+        """ Create a fleet of aliens """
+        # Create an alien and keep adding aliens until there's no room left
+        # Spacing between aliens is one alien width and one alien height
+        alien = Alien(self)
 
 if __name__ == '__main__':
     # Make a game instance, and run the game
