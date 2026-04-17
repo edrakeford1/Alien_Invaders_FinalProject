@@ -130,6 +130,60 @@ class AlienInvasion:
         # Create an alien and keep adding aliens until there's no room left
         # Spacing between aliens is one alien width and one alien height
         alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        
+        current_x, current_y = alien_width, alien_height
+
+        while current_x < (self.settings.screen_height - 2 * alien_height):
+            while current_y < (self.settings.screen_width - 3 * alien_width):
+                self._create_alien(current_x, current_y)
+                current_y -= 2 * alien_width
+
+            # Finished a row; reset y value and increment x value
+            current_x -= 2 * alien_height
+            current_y = alien_width
+
+    def _create_alien(self, x_position, y_position):
+        """ Create an alien and place it in the fleet """
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+
+    def _check_fleet_edges(self):
+        """ Respond appropriately if any aliens have reached an edge """
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+            """ Drop the entire fleet and change the fleet's direction  """
+            for alien in self.aliens.sprites():
+                alien.rect.x += self.settings.fleet_drop_speed
+            self.settings.fleet_direction *= -1
+
+    def _ship_hit(self):
+        """ Respond to the ship being hit by an alien """
+        # Get rid of any remaining bullets and aliens
+        self.bullets.empty()
+        self.aliens.empty
+
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()
+
+        # Pause
+        sleep(0.5)
+
+    def _check_aliens_left(self):
+        """ Check if any aliens have reached the left of the screen """
+        for alien in self.aliens.sprites():
+            if alien.rect.left >= self.settings.screen_width:
+                # Treat this the same as if the ship got hit
+                self._ship_hit()
+                break
 
 if __name__ == '__main__':
     # Make a game instance, and run the game
