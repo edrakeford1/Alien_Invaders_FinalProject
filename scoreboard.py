@@ -50,7 +50,7 @@ class Scoreboard:
         # Center the high score at the middle of the right of the screen
         self.high_score_rect = self.high_score_image.get_rect()
         self.high_score_rect.centerx = self.screen_rect.centerx
-        self.high_score_rect.right = self.score_rect.right - 20
+        self.high_score_rect.right = self.score_rect.right
 
     def prep_level(self):
         """ Turn the level into a rendered image """
@@ -60,7 +60,7 @@ class Scoreboard:
         # Position the level below the score
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right
-        self.level_rect.bottom = self.score_rect.bottom + 10
+        self.level_rect.bottom = self.score_rect.bottom - 60
 
     def prep_ships(self):
         """ Show how many ships are left """
