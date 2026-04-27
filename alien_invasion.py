@@ -1,5 +1,5 @@
 """
-Program: alien_invasion.py
+Program: alien_invasion.py - milestone3
 Name: Elijah Drakeford
 Purpose: Changing game mechanics of the Alien Invasion game
 Date: April 10, 2026
