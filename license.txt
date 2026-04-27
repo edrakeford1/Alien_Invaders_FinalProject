@@ -1,0 +1,5 @@
+
+
+
+
+images/ship.bmp: https://github.com/ehmatthes/pcc_3e/tree/main/chapter_12/adding_ship_image/images
